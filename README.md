@@ -10,7 +10,7 @@ Run cat_invasion.py in your terminal.
 ```
 python3 cat_invasion.py
 ```
-
+- Press `Start` to play the game.
 - To move around, use left/right key. 
 - To shoot, use spacebar.
 - Level up by eliminating all cats on screen.
@@ -19,3 +19,4 @@ The difficulty of the game increases as you level up, everything will move faste
 
 Have fun playing the game and you are welcome to challenge the current high score!
 
+![Current Record](/images/game_record.png)
