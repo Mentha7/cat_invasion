@@ -24,9 +24,11 @@ class Settings():
         self.cat_speed_factor = 4
         self.fleet_drop_speed = 20
         self.fleet_direction = 1 # 1 for right, -1 for left
+        self.cat_points = 50
 
         # speed up the game if level up
         self.speedup_scale = 1.1
+        self.score_scale = 1.5
 
         self.initialise_dynamic_settings()
 
@@ -44,6 +46,7 @@ class Settings():
         self.broccoli_speed_factor *= self.speedup_scale
         self.bullet_speed_factor *= self.speedup_scale
         self.cat_speed_factor *= self.speedup_scale
+        self.cat_points *= self.score_scale
 
 
 

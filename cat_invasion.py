@@ -6,6 +6,7 @@ import game_functions as gf
 from pygame.sprite import Group
 from game_stats import GameStats
 from button import Button
+from scoreboard import Scoreboard
 
 def run_game():
     # initialise game and create a screen
@@ -30,16 +31,17 @@ def run_game():
     # create a group of cats
     gf.create_fleet(ci_settings, screen, broc, cats)
 
-    # create game stats
+    # create game stats and scoreboard
     stats = GameStats(ci_settings)
+    sb = Scoreboard(ci_settings, screen, stats)
 
     # begin game
     while True:
         gf.check_events(ci_settings, screen, stats, start_button, broc, cats, bullets)
         if stats.game_active:
             broc.update()
-            gf.update_bullets(ci_settings, screen, broc, cats, bullets)
+            gf.update_bullets(ci_settings, screen, stats, sb, broc, cats, bullets)
             gf.update_cats(ci_settings, stats, screen, broc, cats, bullets)
-        gf.update_screen(ci_settings, screen, stats, broc, cats, bullets, start_button)
+        gf.update_screen(ci_settings, screen, stats, sb, broc, cats, bullets, start_button)
 
 run_game()

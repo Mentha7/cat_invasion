@@ -63,7 +63,7 @@ def check_start_button(ci_settings, screen, stats, start_button, broccoli, cats,
         create_fleet(ci_settings, screen, broccoli, cats)
         broccoli.center_broccoli()
         
-def update_screen(ci_settings, screen, stats, broccoli, cats, bullets, start_button):
+def update_screen(ci_settings, screen, stats, sb, broccoli, cats, bullets, start_button):
     """update the images on the screen, cut to new screen
     """
     screen.fill(ci_settings.bg_color)
@@ -74,6 +74,7 @@ def update_screen(ci_settings, screen, stats, broccoli, cats, bullets, start_but
 
     broccoli.blitme()
     cats.draw(screen) # paints every cat in cat group
+    sb.show_score()
 
     if not stats.game_active:
         start_button.draw_button()
@@ -81,18 +82,24 @@ def update_screen(ci_settings, screen, stats, broccoli, cats, bullets, start_but
     # make the latest painted screen visible
     pygame.display.flip()
 
-def update_bullets(ci_settings, screen, broccoli, cats, bullets):
+def update_bullets(ci_settings, screen, stats, sb, broccoli, cats, bullets):
     """update the position of bullets, delete bullets that have 
     disappeared from the screen."""
     bullets.update()
     for bullet in bullets.copy():
         if bullet.rect.bottom <= 0:
             bullets.remove(bullet)
-    check_bullet_cat_collisions(ci_settings, screen, broccoli, cats, bullets)
+    check_bullet_cat_collisions(ci_settings, screen, stats, sb, broccoli, cats, bullets)
 
-def check_bullet_cat_collisions(ci_settings, screen, broccoli, cats, bullets):
+def check_bullet_cat_collisions(ci_settings, screen, stats, sb, broccoli, cats, bullets):
     # check if bullet hit cat, if so, delete that bullet and the cat
     collisions = pygame.sprite.groupcollide(bullets, cats, True, True)
+
+    if collisions:
+        for cats in collisions.values():            
+            stats.score += ci_settings.cat_points * len(cats)
+            sb.prep_score()
+        check_high_score(stats, sb)
 
     if len(cats) == 0:
         bullets.empty()
@@ -196,3 +203,9 @@ def update_cats(ci_settings, stats, screen, broccoli, cats, bullets):
         broccoli_hit(ci_settings, stats, screen, broccoli, cats, bullets)
     # check if cat reaches bottom of screen
     check_cats_bottom(ci_settings, stats, screen, broccoli, cats, bullets)
+
+
+def check_high_score(stats, sb):
+    if stats.score > stats.high_score:
+        stats.high_score = stats.score
+        sb.prep_high_score()
