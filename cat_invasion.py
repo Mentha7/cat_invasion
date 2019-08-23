@@ -1,7 +1,8 @@
-import sys
 import pygame
 from settings import Settings
 from broccoli import Broccoli
+import game_functions as gf
+from pygame.sprite import Group
 
 def run_game():
     # initialise game and create a screen
@@ -12,21 +13,16 @@ def run_game():
     pygame.display.set_caption('Cat Invasion!')
 
     # create a broccoli
-    broc = Broccoli(screen)
+    broc = Broccoli(ci_settings, screen)
+    
+    # create bullet group
+    bullets = Group()
 
     # begin game
     while True:
-
-        # monitor keyboard and mouse events
-        for event in pygame.event.get():
-            if event.type == pygame.QUIT:
-                sys.exit()
-                
-        # paint screen
-        screen.fill(ci_settings.bg_color)
-        broc.blitme()
-
-        # make screen visible
-        pygame.display.flip()
+        gf.check_events(ci_settings, screen, broc, bullets)
+        broc.update()
+        bullets.update()
+        gf.update_screen(ci_settings, screen, broc, bullets)
 
 run_game()
