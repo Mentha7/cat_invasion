@@ -37,11 +37,11 @@ def run_game():
 
     # begin game
     while True:
-        gf.check_events(ci_settings, screen, stats, start_button, broc, cats, bullets)
+        gf.check_events(ci_settings, screen, stats, sb, start_button, broc, cats, bullets)
         if stats.game_active:
             broc.update()
             gf.update_bullets(ci_settings, screen, stats, sb, broc, cats, bullets)
-            gf.update_cats(ci_settings, stats, screen, broc, cats, bullets)
+            gf.update_cats(ci_settings, screen, stats, sb, broc, cats, bullets)
         gf.update_screen(ci_settings, screen, stats, sb, broc, cats, bullets, start_button)
 
 run_game()

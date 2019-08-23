@@ -1,10 +1,12 @@
 import pygame
+from pygame.sprite import Sprite
 
-class Broccoli():
+class Broccoli(Sprite):
 
     def __init__(self, ci_settings, screen):
         """Initialises broccoli and set its initial position
         """
+        super().__init__()
         self.screen = screen
         self.ci_settings = ci_settings
 

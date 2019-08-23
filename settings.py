@@ -37,6 +37,7 @@ class Settings():
         self.broccoli_speed_factor = 6
         self.bullet_speed_factor = 6
         self.cat_speed_factor = 4
+        self.cat_points = 50
 
         self.fleet_direction = 1
 

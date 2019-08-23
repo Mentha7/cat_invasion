@@ -28,7 +28,7 @@ def check_keyup_events(event, broccoli):
     elif event.key == pygame.K_LEFT:
         broccoli.moving_left = False
 
-def check_events(ci_settings, screen, stats, start_button, broccoli, cats, bullets):
+def check_events(ci_settings, screen, stats, sb, start_button, broccoli, cats, bullets):
     """handles button and mouse events
     """
     for event in pygame.event.get():
@@ -43,10 +43,10 @@ def check_events(ci_settings, screen, stats, start_button, broccoli, cats, bulle
 
         elif event.type == pygame.MOUSEBUTTONDOWN:
             mouse_x, mouse_y = pygame.mouse.get_pos()
-            check_start_button(ci_settings, screen, stats, start_button,
+            check_start_button(ci_settings, screen, stats, sb, start_button,
                                 broccoli, cats, bullets,  mouse_x, mouse_y)
 
-def check_start_button(ci_settings, screen, stats, start_button, broccoli, cats, bullets, mouse_x, mouse_y):
+def check_start_button(ci_settings, screen, stats, sb, start_button, broccoli, cats, bullets, mouse_x, mouse_y):
     """start game when player hit start button
     """
     if start_button.rect.collidepoint(mouse_x, mouse_y) and not stats.game_active:
@@ -57,6 +57,12 @@ def check_start_button(ci_settings, screen, stats, start_button, broccoli, cats,
         stats.reset_stats()
         stats.game_active = True
         
+        # reset scoreboard images
+        sb.prep_score()
+        sb.prep_high_score()
+        sb.prep_level()
+        sb.prep_broccoli()
+
         cats.empty()
         bullets.empty()
 
@@ -104,6 +110,10 @@ def check_bullet_cat_collisions(ci_settings, screen, stats, sb, broccoli, cats, 
     if len(cats) == 0:
         bullets.empty()
         ci_settings.increase_speed()
+
+        stats.level += 1
+        sb.prep_level()
+
         create_fleet(ci_settings, screen, broccoli, cats)
 
 def get_number_cats_x(ci_settings, cat_width):
@@ -161,12 +171,15 @@ def change_fleet_direction(ci_settings, cats):
         cat.rect.y += ci_settings.fleet_drop_speed
     ci_settings.fleet_direction *= -1 # alternate directions
 
-def broccoli_hit(ci_settings, stats, screen, broccoli, cats, bullets):
+def broccoli_hit(ci_settings, screen, stats, sb, broccoli, cats, bullets):
     """respond when broccoli is hit by cat
     """
     if stats.broccoli_left > 0:
         stats.broccoli_left -= 1
     
+        # update broccoli left
+        sb.prep_broccoli()
+
         cats.empty()
         bullets.empty()
 
@@ -181,17 +194,17 @@ def broccoli_hit(ci_settings, stats, screen, broccoli, cats, bullets):
         pygame.mouse.set_visible(True)
 
 
-def check_cats_bottom(ci_settings, stats, screen, broccoli, cats, bullets):
+def check_cats_bottom(ci_settings, screen, stats, sb, broccoli, cats, bullets):
     """check if any cat reaches the bottom of the screen
     """
     screen_rect = screen.get_rect()
     for cat in cats.sprites():
         if cat.rect.bottom >= screen_rect.bottom:
-            broccoli_hit(ci_settings, stats, screen, broccoli, cats, bullets)
+            broccoli_hit(ci_settings, screen, stats, sb, broccoli, cats, bullets)
             break
 
 
-def update_cats(ci_settings, stats, screen, broccoli, cats, bullets):
+def update_cats(ci_settings, screen, stats, sb,  broccoli, cats, bullets):
     """check if any cat reaches the edge of the screen
     update the position of all cats in group cats
     """
@@ -200,9 +213,9 @@ def update_cats(ci_settings, stats, screen, broccoli, cats, bullets):
 
     # check for cat-broccoli collisions
     if pygame.sprite.spritecollideany(broccoli, cats):
-        broccoli_hit(ci_settings, stats, screen, broccoli, cats, bullets)
+        broccoli_hit(ci_settings, screen, stats, sb, broccoli, cats, bullets)
     # check if cat reaches bottom of screen
-    check_cats_bottom(ci_settings, stats, screen, broccoli, cats, bullets)
+    check_cats_bottom(ci_settings, screen, stats, sb, broccoli, cats, bullets)
 
 
 def check_high_score(stats, sb):
