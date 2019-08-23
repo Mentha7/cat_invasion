@@ -55,13 +55,19 @@ def update_screen(ci_settings, screen, broccoli, cats, bullets):
     # make the latest painted screen visible
     pygame.display.flip()
 
-def update_bullets(bullets):
+def update_bullets(ci_settings, screen, broccoli, cats, bullets):
     """update the position of bullets, delete bullets that have 
     disappeared from the screen."""
     bullets.update()
     for bullet in bullets.copy():
         if bullet.rect.bottom <= 0:
             bullets.remove(bullet)
+    # check if bullet hit cat, if so, delete that bullet and the cat
+    collisions = pygame.sprite.groupcollide(bullets, cats, True, True)
+
+    if len(cats) == 0:
+        bullets.empty()
+        create_fleet(ci_settings, screen, broccoli, cats)
 
 def get_number_cats_x(ci_settings, cat_width):
     """calculate the number of cats that could fit in one row
@@ -102,3 +108,28 @@ def create_fleet(ci_settings, screen, broccoli, cats):
     for row_number in range(number_rows):
         for cat_n in range(number_cats_x):
             create_cat(ci_settings, screen, cats, cat_n, row_number)
+            
+def check_fleet_edges(ci_settings, cats):
+    """do something when cats reach the edges of screen
+    """
+    for cat in cats.sprites():
+        if cat.check_edges():
+            change_fleet_direction(ci_settings, cats)
+            break
+
+def change_fleet_direction(ci_settings, cats):
+    """move the group of cats down and change their directions
+    """
+    for cat in cats.sprites():
+        cat.rect.y += ci_settings.fleet_drop_speed
+    ci_settings.fleet_direction *= -1 # alternate directions
+
+
+def update_cats(ci_settings, cats):
+    """check if any cat reaches the edge of the screen
+    update the position of all cats in group cats
+    """
+    check_fleet_edges(ci_settings, cats)
+    cats.update()
+
+

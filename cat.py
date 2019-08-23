@@ -13,7 +13,7 @@ class Cat(Sprite):
 
         # load cat image and set its rectangle
         tmp_image = pygame.image.load('images/cat1.bmp')
-        self.image = pygame.transform.rotozoom(tmp_image, 0, 0.06)
+        self.image = pygame.transform.rotozoom(tmp_image, 0, 0.09)
         self.rect = self.image.get_rect()
 
         # every cat spawns from the upper left corner of the screen
@@ -27,4 +27,22 @@ class Cat(Sprite):
         """paint cat at designated position
         """
         self.screen.blit(self.image, self.rect)
+
+
+    def check_edges(self):
+        """return True if cat reaches edge of the screen
+        """
+        screen_rect = self.screen.get_rect()
+        if self.rect.right >= screen_rect.right:
+            return True
+        elif self.rect.left <= 0:
+            return True
+
+    def update(self):
+        """move cat to the right/left
+        """
+        self.x += (self.ci_settings.cat_speed_factor 
+                    * self.ci_settings.fleet_direction)
+        self.rect.x = self.x
+
 

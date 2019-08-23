@@ -13,8 +13,17 @@ class Settings():
         self.broccoli_speed_factor = 6
 
         # bullet
-        self.bullet_speed_factor = 4
-        self.bullet_width = 4
+        self.bullet_speed_factor = 6
+        self.bullet_width = 3 
         self.bullet_height = 30
         self.bullet_color = 60,60,60
         self.bullets_allowed = 10
+
+        # cat
+        self.cat_speed_factor = 3
+        self.fleet_drop_speed = 10
+        self.fleet_direction = 1 # 1 for right, -1 for left
+
+
+
+
