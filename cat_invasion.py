@@ -11,6 +11,9 @@ from scoreboard import Scoreboard
 def run_game():
     # initialise game and create a screen
     pygame.init()
+    pygame.mixer.init()
+    pygame.mixer.music.load('wearetheresistors.mp3')
+    pygame.mixer.music.play(-1)
     ci_settings = Settings() 
     screen = pygame.display.set_mode(
             (ci_settings.screen_width, ci_settings.screen_height))
