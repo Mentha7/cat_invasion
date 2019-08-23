@@ -50,6 +50,8 @@ def check_start_button(ci_settings, screen, stats, start_button, broccoli, cats,
     """start game when player hit start button
     """
     if start_button.rect.collidepoint(mouse_x, mouse_y) and not stats.game_active:
+        # reset game speed
+        ci_settings.initialise_dynamic_settings()
         # hide mouse
         pygame.mouse.set_visible(False)
         stats.reset_stats()
@@ -94,6 +96,7 @@ def check_bullet_cat_collisions(ci_settings, screen, broccoli, cats, bullets):
 
     if len(cats) == 0:
         bullets.empty()
+        ci_settings.increase_speed()
         create_fleet(ci_settings, screen, broccoli, cats)
 
 def get_number_cats_x(ci_settings, cat_width):
