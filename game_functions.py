@@ -8,7 +8,13 @@ def check_keydown_events(event, ci_settings, screen, broccoli, bullets):
     elif event.key == pygame.K_LEFT:
         broccoli.moving_left = True
     elif event.key == pygame.K_SPACE:
-        # create a bullet and add it to group
+        fire_bullet(ci_settings, screen, broccoli, bullets)
+
+def fire_bullet(ci_settings, screen, broccoli, bullets):
+    """fire a bullet if the maximum number of bullets allowed on screen
+    is not reached"""
+    # create a bullet and add it to group
+    if len(bullets) < ci_settings.bullets_allowed:
         new_bullet = Bullet(ci_settings, screen, broccoli)
         bullets.add(new_bullet)
 
@@ -43,3 +49,11 @@ def update_screen(ci_settings, screen, broccoli, bullets):
 
     # make the latest painted screen visible
     pygame.display.flip()
+
+def update_bullets(bullets):
+    """update the position of bullets, delete bullets that have 
+    disappeared from the screen."""
+    bullets.update()
+    for bullet in bullets.copy():
+        if bullet.rect.bottom <= 0:
+            bullets.remove(bullet)

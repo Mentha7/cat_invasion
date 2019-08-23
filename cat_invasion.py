@@ -22,7 +22,8 @@ def run_game():
     while True:
         gf.check_events(ci_settings, screen, broc, bullets)
         broc.update()
-        bullets.update()
+        gf.update_bullets(bullets)
+
         gf.update_screen(ci_settings, screen, broc, bullets)
 
 run_game()
