@@ -42,4 +42,5 @@ class Broccoli():
         """
         self.screen.blit(self.image, self.rect)
 
-
+    def center_broccoli(self):
+        self.center = self.screen_rect.centerx

@@ -4,6 +4,7 @@ from broccoli import Broccoli
 from cat import Cat
 import game_functions as gf
 from pygame.sprite import Group
+from game_stats import GameStats
 
 def run_game():
     # initialise game and create a screen
@@ -25,12 +26,16 @@ def run_game():
     # create a group of cats
     gf.create_fleet(ci_settings, screen, broc, cats)
 
+    # create game stats
+    stats = GameStats(ci_settings)
+
     # begin game
     while True:
         gf.check_events(ci_settings, screen, broc, bullets)
-        broc.update()
-        gf.update_bullets(ci_settings, screen, broc, cats, bullets)
-        gf.update_cats(ci_settings, cats)
+        if stats.game_active:
+            broc.update()
+            gf.update_bullets(ci_settings, screen, broc, cats, bullets)
+            gf.update_cats(ci_settings, stats, screen, broc, cats, bullets)
         gf.update_screen(ci_settings, screen, broc, cats, bullets)
 
 run_game()

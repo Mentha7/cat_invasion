@@ -2,6 +2,7 @@ import sys
 import pygame
 from bullet import Bullet
 from cat import Cat
+from time import sleep
 
 def check_keydown_events(event, ci_settings, screen, broccoli, bullets):
     if event.key == pygame.K_RIGHT:
@@ -62,6 +63,9 @@ def update_bullets(ci_settings, screen, broccoli, cats, bullets):
     for bullet in bullets.copy():
         if bullet.rect.bottom <= 0:
             bullets.remove(bullet)
+    check_bullet_cat_collisions(ci_settings, screen, broccoli, cats, bullets)
+
+def check_bullet_cat_collisions(ci_settings, screen, broccoli, cats, bullets):
     # check if bullet hit cat, if so, delete that bullet and the cat
     collisions = pygame.sprite.groupcollide(bullets, cats, True, True)
 
@@ -124,12 +128,34 @@ def change_fleet_direction(ci_settings, cats):
         cat.rect.y += ci_settings.fleet_drop_speed
     ci_settings.fleet_direction *= -1 # alternate directions
 
+def broccoli_hit(ci_settings, stats, screen, broccoli, cats, bullets):
+    """respond when broccoli is hit by cat
+    """
+    if stats.broccoli_left > 0:
+        stats.broccoli_left -= 1
+    
+        cats.empty()
+        bullets.empty()
 
-def update_cats(ci_settings, cats):
+        create_fleet(ci_settings, screen, broccoli, cats)
+        broccoli.center_broccoli()
+
+        # pause
+        sleep(0.7)
+
+    else:
+        stats.game_active = False
+
+
+def update_cats(ci_settings, stats, screen, broccoli, cats, bullets):
     """check if any cat reaches the edge of the screen
     update the position of all cats in group cats
     """
     check_fleet_edges(ci_settings, cats)
     cats.update()
+
+    # check for cat-broccoli collisions
+    if pygame.sprite.spritecollideany(broccoli, cats):
+        broccoli_hit(ci_settings, stats, screen, broccoli, cats, bullets)
 
 
