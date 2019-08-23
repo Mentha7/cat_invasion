@@ -1,3 +1,5 @@
+import json
+
 class GameStats():
     """game statistics
     """
@@ -8,7 +10,11 @@ class GameStats():
         self.ci_settings = ci_settings
         self.reset_stats()
         self.game_active = False
-        self.high_score = 0
+        try:
+            with open('high_score.json') as fp:
+                self.high_score = json.load(fp)
+        except FileNotFoundError:
+            self.high_score = 0
 
     def reset_stats(self):
         self.broccoli_left = self.ci_settings.broccoli_limit

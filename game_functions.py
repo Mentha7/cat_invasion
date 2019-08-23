@@ -3,8 +3,9 @@ import pygame
 from bullet import Bullet
 from cat import Cat
 from time import sleep
+import json
 
-def check_keydown_events(event, ci_settings, screen, broccoli, bullets):
+def check_keydown_events(event, ci_settings, screen, stats, broccoli, bullets):
     if event.key == pygame.K_RIGHT:
         broccoli.moving_right = True
     elif event.key == pygame.K_LEFT:
@@ -12,6 +13,7 @@ def check_keydown_events(event, ci_settings, screen, broccoli, bullets):
     elif event.key == pygame.K_SPACE:
         fire_bullet(ci_settings, screen, broccoli, bullets)
     elif event.key == pygame.K_q:
+        save_high_score(stats)
         sys.exit()
 
 def fire_bullet(ci_settings, screen, broccoli, bullets):
@@ -33,10 +35,11 @@ def check_events(ci_settings, screen, stats, sb, start_button, broccoli, cats, b
     """
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
+            save_high_score(stats)
             sys.exit()
 
         elif event.type == pygame.KEYDOWN:
-            check_keydown_events(event, ci_settings, screen, broccoli, bullets)
+            check_keydown_events(event, ci_settings, screen, stats, broccoli, bullets)
 
         elif event.type == pygame.KEYUP:
             check_keyup_events(event, broccoli)
@@ -222,3 +225,8 @@ def check_high_score(stats, sb):
     if stats.score > stats.high_score:
         stats.high_score = stats.score
         sb.prep_high_score()
+
+def save_high_score(stats):
+    with open('high_score.json', 'w') as fp:
+        json.dump(stats.high_score, fp)
+
