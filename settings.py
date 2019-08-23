@@ -5,16 +5,16 @@ class Settings():
         """initialises settings
         """
         # screen 
-        self.screen_width = 1200
-        self.screen_height = 800
+        self.screen_width = 2400
+        self.screen_height = 1400
         self.bg_color = (230,230,230)
 
         # broccoli
-        self.broccoli_speed_factor = 1.5
+        self.broccoli_speed_factor = 6
 
         # bullet
-        self.bullet_speed_factor = 1
-        self.bullet_width = 3
-        self.bullet_height = 15
+        self.bullet_speed_factor = 4
+        self.bullet_width = 4
+        self.bullet_height = 30
         self.bullet_color = 60,60,60
-        self.bullets_allowed = 6
+        self.bullets_allowed = 10
