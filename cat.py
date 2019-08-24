@@ -13,7 +13,7 @@ class Cat(Sprite):
 
         # load cat image and set its rectangle
         tmp_image = pygame.image.load('images/cat1.bmp')
-        self.image = pygame.transform.rotozoom(tmp_image, 0, 0.07)
+        self.image = pygame.transform.rotozoom(tmp_image, 0, 0.08)
         self.rect = self.image.get_rect()
 
         # every cat spawns from the upper left corner of the screen

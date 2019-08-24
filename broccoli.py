@@ -12,7 +12,7 @@ class Broccoli(Sprite):
 
         # load broccoli image and get its rectangle
         tmp_image = pygame.image.load('images/broccoli.bmp')
-        self.image = pygame.transform.rotozoom(tmp_image, 0, 0.07)
+        self.image = pygame.transform.rotozoom(tmp_image, 0, 0.09)
         self.rect = self.image.get_rect()
         self.screen_rect = screen.get_rect()
 
