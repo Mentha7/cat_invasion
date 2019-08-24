@@ -19,7 +19,7 @@ The difficulty of the game increases as you level up, everything will move faste
 
 Have fun playing the game and you are welcome to challenge the current high score!
 
-![Current Record](/images/game_record.png)
+![Current Record](/images/new_record.png)
 
 ## Special Thanks
 
